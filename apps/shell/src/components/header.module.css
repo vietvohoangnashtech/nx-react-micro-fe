@@ -1,0 +1,36 @@
+.headerContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.headerContainer div {
+  display: flex;
+  align-items: center;
+}
+
+.headerContainer a {
+  margin-right: 15px;
+  text-decoration: none;
+  color: #007bff;
+}
+
+.headerContainer a:hover {
+  text-decoration: underline;
+}
+
+.headerContainer button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.headerContainer button:hover {
+  background-color: #0056b3;
+}
