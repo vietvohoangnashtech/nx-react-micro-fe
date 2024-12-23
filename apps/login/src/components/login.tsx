@@ -15,12 +15,13 @@ const Login: React.FC = () => {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    if (username === 'test' && password === '123') {
-      login(username);
-      navigate('/');
-    } else {
-      alert('Invalid credentials.');
-    }
+    login('token');
+    // if (username === 'test' && password === '123') {
+    //   login(username);
+    //   navigate('/');
+    // } else {
+    //   alert('Invalid credentials.');
+    // }
   };
 
   return (

@@ -1,101 +1,151 @@
 # NxReactMicroFe
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+## Overview
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is ready ✨.
+This project is an e-commerce micro frontend application built using ReactJS and Nx. It demonstrates how to structure a complex application as a set of independent, deployable micro frontends, enhancing scalability and maintainability.
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/getting-started/tutorials/react-monorepo-tutorial?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+### Features:
+- **Login Page:** User authentication and session management.
+- **Home Page:** Landing page for the e-commerce site.
+- **Product List/Detail:** Browse products with detailed views.
+- **Cart Functionality:** Basic cart with the ability to add to cart and display total items.
+- **Shared State Management:** Global state management to share states across all micro frontends.
 
-## Run tasks
+### Technologies:
+- **ReactJS:** Component-based UI.
+- **React Router Dom:** For application navigation.
+- **Module Federation:** For micro frontend architecture, enabling independent deployments.
+- **Zustand:** For shared state management.
+- **CSS Modules:** For component-level styling.
+- **TailwindCSS:** A utility-first CSS framework that enables rapid UI development with pre-defined styles, offering a highly customizable design system.
+- **Vite:** A fast build tool and development server optimized for modern JavaScript frameworks, providing instant server startup and lightning-fast builds.
+---
 
-To run the dev server for your app, use:
+## Running the Project
 
+### Serve Applications:
+To serve an application:
 ```sh
-npx nx serve shared
+npx nx serve <app-name>
 ```
 
-To create a production bundle:
-
+For example, to serve the `shell` application:
 ```sh
-npx nx build shared
+npx nx serve shell --open
 ```
 
-To see all available targets to run for a project, run:
-
+### Build Applications:
+To build an application for production:
 ```sh
-npx nx show project shared
+npx nx build <app-name>
 ```
 
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
-
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Add new projects
-
-While you could add new projects to your workspace manually, you might want to leverage [Nx plugins](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) and their [code generation](https://nx.dev/features/generate-code?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) feature.
-
-Use the plugin's generator to create new projects.
-
-To generate a new application, use:
-
+For example:
 ```sh
-npx nx g @nx/react:app demo
+npx nx build shell
 ```
 
-To generate a new library, use:
+---
 
+## Adding New Remote Applications
+
+To add a new remote app to the workspace, use the following command:
 ```sh
-npx nx g @nx/react:lib mylib
+npx nx g @nx/react:remote <remote-name> --host=shell
 ```
 
-You can use `npx nx list` to get a list of installed plugins. Then, run `npx nx list <plugin-name>` to learn about more specific capabilities of a particular plugin. Alternatively, [install Nx Console](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) to browse plugins and generators in your IDE.
+Replace `<remote-name>` with the name of the new remote app. For example:
+```sh
+npx nx g @nx/react:remote cart --host=shell
+```
 
-[Learn more about Nx plugins &raquo;](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) | [Browse the plugin registry &raquo;](https://nx.dev/plugin-registry?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+This command will:
+- Create a new remote app under the `apps/` directory.
+- Configure the `shell` application to consume the remote.
 
-## Set up CI!
+For more details, refer to the [official Nx documentation](https://nx.dev/recipes/module-federation/create-a-remote).
 
-### Step 1
+---
 
-To connect to Nx Cloud, run the following command:
+## Folder Structure
 
+The workspace is organized as follows:
+
+```plaintext
+my-ecommerce/
+├── apps/
+│   ├── shell/       # Host application
+│   ├── login/       # Remote application
+│   ├── cart/        # Remote application
+│   ├── home/        # Remote application
+│   ├── products/    # Remote application
+├── libs/
+│   └── shared/      # Shared libraries
+├── nx.json          # Nx workspace configuration
+├── package.json     # Workspace dependencies
+├── tsconfig.json    # TypeScript configuration
+└── yarn.lock        # Dependency lock file
+```
+
+---
+
+## CI/CD Integration
+
+### Step 1: Connect Nx Cloud
+To enable remote caching and task distribution:
 ```sh
 npx nx connect
 ```
 
-Connecting to Nx Cloud ensures a [fast and scalable CI](https://nx.dev/ci/intro/why-nx-cloud?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) pipeline. It includes features such as:
-
-- [Remote caching](https://nx.dev/ci/features/remote-cache?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task distribution across multiple machines](https://nx.dev/ci/features/distribute-task-execution?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Automated e2e test splitting](https://nx.dev/ci/features/split-e2e-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task flakiness detection and rerunning](https://nx.dev/ci/features/flaky-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-### Step 2
-
-Use the following command to configure a CI workflow for your workspace:
-
+### Step 2: Set Up CI Workflow
+Generate a CI configuration file:
 ```sh
 npx nx g ci-workflow
 ```
 
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+---
 
-## Install Nx Console
+## Creating Libraries
 
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
+To create a new shared library:
+```sh
+npx nx g @nx/react:lib <lib-name>
+```
 
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+For example:
+```sh
+npx nx g @nx/react:lib shared-ui
+```
 
-## Useful links
+Libraries can be reused across applications and are located in the `libs/` directory.
 
-Learn more:
+---
 
-- [Learn more about this workspace setup](https://nx.dev/getting-started/tutorials/react-monorepo-tutorial?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+## Useful Commands
 
-And join the Nx community:
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+### Show Dependency Graph:
+```sh
+npx nx graph
+```
+
+### Run Tasks for Affected Projects:
+```sh
+npx nx affected --target=<task>
+```
+
+Example (build affected projects):
+```sh
+npx nx affected --target=build
+```
+
+For more Nx commands, refer to the [Nx documentation](https://nx.dev).
+
+---
+
+## Contributing
+Feel free to contribute to this project by adding new features, fixing bugs, or improving documentation. Fork the repository and submit a pull request.
+
+---
+
+## License
+This project is licensed under the MIT License.
