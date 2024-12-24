@@ -23,6 +23,9 @@ The application consists of the following services:
 # Build all services
 docker compose build
 
+docker compose build --parallel
+# --parallel is used to perform build in parallel to improve build time.
+
 # Build a specific service
 docker compose build shell
 docker compose build login
@@ -106,7 +109,7 @@ docker volume prune
 1. **Initial Setup**
    ```bash
    # Build all services
-   docker compose build
+   docker compose build --parallel
    ```
 
 2. **Start Development Environment**

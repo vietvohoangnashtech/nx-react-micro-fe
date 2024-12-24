@@ -1,3 +1,10 @@
+# Define shared volumes for caching
+volumes:
+  npm-cache:
+    name: "npm-cache"
+  nx-cache:
+    name: "nx-cache"
+
 services:
   shell:
     build:
@@ -5,8 +12,16 @@ services:
       dockerfile: apps/shell/Dockerfile
       args:
         APP_NAME: shell
+        BUILDKIT_INLINE_CACHE: 1
+        NODE_ENV: production
+      cache_from:
+        - shell:latest
+    image: shell:latest
     ports:
-      - "4200:80" # Host is accessible at http://localhost:4200
+      - "4200:80"
+    volumes:
+      - npm-cache:/root/.npm
+      - nx-cache:/app/.nx/cache
     depends_on:
       - login
       - products
@@ -23,8 +38,16 @@ services:
       dockerfile: apps/login/Dockerfile
       args:
         APP_NAME: login
+        BUILDKIT_INLINE_CACHE: 1
+        NODE_ENV: production
+      cache_from:
+        - login:latest
+    image: login:latest
     ports:
-      - "4201:80" # Remote is accessible at http://localhost:4201
+      - "4201:80"
+    volumes:
+      - npm-cache:/root/.npm
+      - nx-cache:/app/.nx/cache
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/health"]
       interval: 30s
@@ -37,8 +60,16 @@ services:
       dockerfile: apps/products/Dockerfile
       args:
         APP_NAME: products
+        BUILDKIT_INLINE_CACHE: 1
+        NODE_ENV: production
+      cache_from:
+        - products:latest
+    image: products:latest
     ports:
-      - "4202:80" # Remote is accessible at http://localhost:4202
+      - "4202:80"
+    volumes:
+      - npm-cache:/root/.npm
+      - nx-cache:/app/.nx/cache
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/health"]
       interval: 30s
@@ -51,8 +82,16 @@ services:
       dockerfile: apps/cart/Dockerfile
       args:
         APP_NAME: cart
+        BUILDKIT_INLINE_CACHE: 1
+        NODE_ENV: production
+      cache_from:
+        - cart:latest
+    image: cart:latest
     ports:
-      - "4203:80" # Remote is accessible at http://localhost:4203
+      - "4203:80"
+    volumes:
+      - npm-cache:/root/.npm
+      - nx-cache:/app/.nx/cache
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/health"]
       interval: 30s
