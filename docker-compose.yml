@@ -1,0 +1,60 @@
+services:
+  shell:
+    build:
+      context: .
+      dockerfile: apps/shell/Dockerfile
+      args:
+        APP_NAME: shell
+    ports:
+      - "4200:80" # Host is accessible at http://localhost:4200
+    depends_on:
+      - login
+      - products
+      - cart
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  login:
+    build:
+      context: .
+      dockerfile: apps/login/Dockerfile
+      args:
+        APP_NAME: login
+    ports:
+      - "4201:80" # Remote is accessible at http://localhost:4201
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  products:
+    build:
+      context: .
+      dockerfile: apps/products/Dockerfile
+      args:
+        APP_NAME: products
+    ports:
+      - "4202:80" # Remote is accessible at http://localhost:4202
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  cart:
+    build:
+      context: .
+      dockerfile: apps/cart/Dockerfile
+      args:
+        APP_NAME: cart
+    ports:
+      - "4203:80" # Remote is accessible at http://localhost:4203
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
